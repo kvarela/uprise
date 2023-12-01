@@ -1,5 +1,6 @@
 import {
   BaseEntity,
+  Check,
   Column,
   CreateDateColumn,
   Entity,
@@ -11,6 +12,7 @@ import {
 import { MembershipType } from './membership-type.entity'
 import { MembershipStatus } from './membership-status.enum'
 import { Class } from '../class/class.entity'
+import { CheckIn } from '../check-in/check-in.entity'
 
 @Entity()
 export class Member extends BaseEntity {
@@ -52,4 +54,7 @@ export class Member extends BaseEntity {
 
   @OneToMany(() => Class, (classEntity) => classEntity.instructor)
   classesTeaching: Class[]
+
+  @OneToMany(() => CheckIn, (checkIn) => checkIn.member)
+  checkIns: CheckIn[]
 }

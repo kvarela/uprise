@@ -6,6 +6,7 @@ import { MemberModule } from './member/member.module';
 import { ConfigModule } from '@nestjs/config';
 import { ClassModule } from './class/class.module';
 import { StyleModule } from './style/style.module';
+import { CheckInModule } from './check-in/check-in.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { StyleModule } from './style/style.module';
     MemberModule,
     ClassModule,
     StyleModule,
+    CheckInModule,
   ],
   controllers: [AppController],
   providers: [AppService],

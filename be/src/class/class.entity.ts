@@ -4,11 +4,13 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
 import { Member } from '../member/member.entity'
 import { Style } from '../style/style.entity'
+import { ScheduledClass } from './scheduled-class.entity'
 
 @Entity()
 export class Class extends BaseEntity {
@@ -34,4 +36,7 @@ export class Class extends BaseEntity {
 
   @Column({ default: 1, type: 'float' })
   durationHours: number
+
+  @OneToMany(() => ScheduledClass, (scheduledClass) => scheduledClass.class)
+  scheduledClasses: ScheduledClass[]
 }
