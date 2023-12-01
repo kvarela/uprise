@@ -10,7 +10,6 @@ export const dbModule = TypeOrmModule.forRoot({
   url: process.env.DATABASE_URL,
   synchronize: true,
   autoLoadEntities: true,
-  entities: ['dist/**/*.entity{.ts,.js}'],
   retryAttempts: 2,
   namingStrategy: new SnakeNamingStrategy()
 })
