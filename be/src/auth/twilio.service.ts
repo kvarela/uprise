@@ -3,7 +3,7 @@ import * as Twilio from 'twilio'
 
 @Injectable()
 export class TwilioService {
-  client: any
+  client: Twilio.Twilio
 
   constructor() {
     this.client = Twilio(
