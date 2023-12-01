@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ClassModule } from './class/class.module';
 import { StyleModule } from './style/style.module';
 import { CheckInModule } from './check-in/check-in.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CheckInModule } from './check-in/check-in.module';
     ClassModule,
     StyleModule,
     CheckInModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
