@@ -4,11 +4,13 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
 import { MembershipType } from './membership-type.entity'
 import { MembershipStatus } from './membership-status.enum'
+import { Class } from '../class/class.entity'
 
 @Entity()
 export class Member extends BaseEntity {
@@ -44,4 +46,10 @@ export class Member extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  @Column({ default: false })
+  isStaff: boolean
+
+  @OneToMany(() => Class, (classEntity) => classEntity.instructor)
+  classesTeaching: Class[]
 }
