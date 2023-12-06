@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { Member } from './member.entity'
+import { InjectRepository } from '@nestjs/typeorm'
 
 @Injectable()
 export class MemberService {
-  constructor(private repo: Repository<Member>) {}
+  constructor(@InjectRepository(Member) private repo: Repository<Member>) {}
 
   async create(phone: string): Promise<Member> {
     const member = this.repo.create({ phone })
