@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@nestjs/swagger": "^7.1.16",
+    "joi": "^17.11.0"
+  },
+  "devDependencies": {
+    "@types/joi": "^17.2.3"
+  }
+}
