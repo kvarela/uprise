@@ -1,7 +1,7 @@
 // LandingPage.js
 import React from 'react'
 import { Link } from 'react-router-dom'
-import QRCode from 'qrcode.react' // You need to install qrcode.react
+import QRCode from 'qrcode.react'
 
 function LandingPage() {
   return (
