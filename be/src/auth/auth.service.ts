@@ -12,10 +12,12 @@ export class AuthService {
   ) {}
 
   async auth(dto: AuthDto) {
+    this.checkPhoneNumber(dto.phone)
     await this.twilioService.createVerification(dto.phone)
   }
 
   async verify(dto: VerifyDto) {
+    this.checkPhoneNumber(dto.phone)
     await this.twilioService.checkVerification(dto.phone, dto.code)
 
     const member = await this.memberService.findOneByPhone(dto.phone)
@@ -25,5 +27,12 @@ export class AuthService {
     }
 
     return member
+  }
+
+  checkPhoneNumber(phone: string) {
+    // Ensure phone matches regex
+    if (!phone.match(/^\+[1-9]\d{1,14}$/)) {
+      throw new Error('Invalid phone number')
+    }
   }
 }
