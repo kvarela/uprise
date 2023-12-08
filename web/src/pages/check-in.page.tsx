@@ -1,9 +1,26 @@
 // CheckIn.js
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function CheckIn() {
+  const navigate = useNavigate()
+  const [isTokenValid, setIsTokenValid] = useState(false)
   const [classSelected, setClassSelected] = useState('')
   const [status, setStatus] = useState('')
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken')
+
+    if (token) {
+      setIsTokenValid(true)
+    } else {
+      navigate('/login')
+    }
+  }, [navigate])
+
+  if (!isTokenValid) {
+    return <div>Loading...</div> // or any other loading indicator
+  }
 
   const handleCheckIn = () => {
     // Implement check-in logic here
