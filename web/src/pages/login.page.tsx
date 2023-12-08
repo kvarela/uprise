@@ -1,27 +1,31 @@
 // Login.js
 import React, { useState } from 'react'
+import PhoneInput from 'react-phone-number-input'
+import { E164Number } from 'libphonenumber-js/core'
 
-function Login() {
-  const [phoneNumber, setPhoneNumber] = useState('')
+export function Login() {
+  const [phoneNumber, setPhoneNumber] = useState<E164Number>()
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     // Handle the login logic here
     // Store the token in localStorage or sessionStorage
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleLogin}>
       <h1>Login</h1>
-      <input
-        type="tel"
-        value={phoneNumber}
-        onChange={(e) => setPhoneNumber(e.target.value)}
-        placeholder="Phone Number"
-      />
+      <div>
+        <label htmlFor="phone">Phone Number:</label>
+        <PhoneInput
+          international
+          defaultCountry="US"
+          value={phoneNumber}
+          onChange={setPhoneNumber}
+          id="phone"
+        />
+      </div>
       <button type="submit">Login</button>
     </form>
   )
 }
-
-export default Login

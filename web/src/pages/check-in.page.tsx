@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function CheckIn() {
+export function CheckIn() {
   const navigate = useNavigate()
   const [isTokenValid, setIsTokenValid] = useState(false)
   const [classSelected, setClassSelected] = useState('')
@@ -40,5 +40,3 @@ function CheckIn() {
     </div>
   )
 }
-
-export default CheckIn

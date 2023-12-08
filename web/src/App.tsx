@@ -1,10 +1,10 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import CheckIn from './pages/check-in.page'
 import LandingPage from './pages/landing.page'
-import Login from './pages/login.page'
+import { Login } from './pages/login.page'
 import Register from './pages/register.page'
 import UpdateMembership from './pages/update-membership.page'
+import { CheckIn } from './pages/check-in.page'
 
 function App() {
   return (
