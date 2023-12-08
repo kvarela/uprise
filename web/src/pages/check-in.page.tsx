@@ -9,7 +9,7 @@ export function CheckIn() {
   const [status, setStatus] = useState('')
 
   useEffect(() => {
-    const token = localStorage.getItem('jwtToken')
+    const token = localStorage.getItem('jwt')
 
     if (token) {
       setIsTokenValid(true)

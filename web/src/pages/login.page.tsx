@@ -19,7 +19,9 @@ export function Login() {
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/verify`, { phone, code })
       console.log({ res })
-      toast.success('Verify call made successfully')
+      toast.success('Successfully verified')
+
+      localStorage.setItem('jwt', res.data.jwt)
     } catch (error) {
       toast.error((error as any).response?.data?.message || 'An error occurred')
     } finally {
