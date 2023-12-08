@@ -7,17 +7,32 @@ import 'react-toastify/dist/ReactToastify.css'
 import { E164Number } from 'libphonenumber-js'
 
 export function Login() {
-  const [phoneNumber, setPhoneNumber] = useState<E164Number>()
+  const [phone, setPhoneNumber] = useState<E164Number>()
   const [isLoading, setIsLoading] = useState(false)
   const [isCodeSent, setIsCodeSent] = useState(false)
-  const [verificationCode, setVerificationCode] = useState('')
+  const [code, setVerificationCode] = useState('')
+
+  const handleCode = async (event: { preventDefault: () => void }) => {
+    event.preventDefault()
+    setIsLoading(true)
+
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/verify`, { phone, code })
+      console.log({ res })
+      toast.success('Verify call made successfully')
+    } catch (error) {
+      toast.error((error as any).response?.data?.message || 'An error occurred')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
     setIsLoading(true)
 
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/auth`, { phone: phoneNumber })
+      await axios.post(`${process.env.REACT_APP_API_URL}/auth`, { phone })
       setIsCodeSent(true)
       toast.success('Code sent to your phone.')
     } catch (error) {
@@ -30,40 +45,38 @@ export function Login() {
   return (
     <div>
       <ToastContainer />
-      <form onSubmit={handleLogin}>
-        <h1>Login</h1>
-        {!isCodeSent ? (
-          <>
-            <div>
-              <label htmlFor="phone">Phone Number:</label>
-              <PhoneInput
-                international
-                defaultCountry="US"
-                value={phoneNumber}
-                onChange={setPhoneNumber}
-                id="phone"
-              />
-            </div>
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? 'Loading...' : 'Login'}
-            </button>
-          </>
-        ) : (
-          <>
-            <div>
-              <label htmlFor="code">Enter Code:</label>
-              <input
-                type="text"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                id="code"
-                maxLength={4}
-              />
-            </div>
-            <button type="button">Verify</button>
-          </>
-        )}
-      </form>
+      <h1>Login</h1>
+      {!isCodeSent ? (
+        <form onSubmit={handleLogin}>
+          <div>
+            <label htmlFor="phone">Phone Number:</label>
+            <PhoneInput
+              international
+              defaultCountry="US"
+              value={phone}
+              onChange={setPhoneNumber}
+              id="phone"
+            />
+          </div>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Loading...' : 'Login'}
+          </button>
+        </form>
+      ) : (
+        <form onSubmit={handleCode}>
+          <div>
+            <label htmlFor="code">Enter Code:</label>
+            <input
+              type="text"
+              value={code}
+              onChange={(e) => setVerificationCode(e.target.value)}
+              id="code"
+              maxLength={4}
+            />
+          </div>
+          <button type="submit">Verify</button>
+        </form>
+      )}
     </div>
   )
 }

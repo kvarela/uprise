@@ -3,10 +3,16 @@ import { AuthDto } from './dtos/auth.dto'
 import { TwilioService } from './twilio.service'
 import { VerifyDto } from './dtos/verify.dto'
 import { MemberService } from '../member/member.service'
+import { VerifyResponseDto } from './dtos/verify-response.dto'
+import { JwtService } from '@nestjs/jwt'
+import { ConfigService } from '@nestjs/config'
+import { Member } from '../member/member.entity'
 
 @Injectable()
 export class AuthService {
   constructor(
+    private configService: ConfigService,
+    private jwtService: JwtService,
     private twilioService: TwilioService,
     private memberService: MemberService
   ) {}
@@ -16,17 +22,24 @@ export class AuthService {
     await this.twilioService.createVerification(dto.phone)
   }
 
-  async verify(dto: VerifyDto) {
+  generateJwt(member: Member) {
+    return this.jwtService.sign({ sub: member.id })
+  }
+
+  async verify(dto: VerifyDto): Promise<VerifyResponseDto> {
     this.checkPhoneNumber(dto.phone)
     await this.twilioService.checkVerification(dto.phone, dto.code)
 
-    const member = await this.memberService.findOneByPhone(dto.phone)
+    const member =
+      (await this.memberService.findOneByPhone(dto.phone)) ||
+      (await this.memberService.create(dto.phone))
 
-    if (!member) {
-      return this.memberService.create(dto.phone)
+    const jwt = this.generateJwt(member)
+
+    return {
+      jwt,
+      member
     }
-
-    return member
   }
 
   checkPhoneNumber(phone: string) {

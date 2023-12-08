@@ -19,28 +19,30 @@ export class Member extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ nullable: true })
   name: string
 
-  @Column()
+  @Column({ nullable: true })
   dob: Date
 
-  @Column()
+  @Column({ nullable: true })
   address: string
 
-  @Column()
+  @Column({ nullable: true })
   email: string
 
   @Column()
   phone: string
 
-  @Column()
+  @Column({ nullable: true })
   forteId: string
 
-  @ManyToOne(() => MembershipType, (membershipType) => membershipType.members)
+  @ManyToOne(() => MembershipType, (membershipType) => membershipType.members, {
+    nullable: true
+  })
   membershipType: MembershipType
 
-  @Column()
+  @Column({ nullable: true })
   membershipStatus: MembershipStatus
 
   @CreateDateColumn()
@@ -52,9 +54,11 @@ export class Member extends BaseEntity {
   @Column({ default: false })
   isStaff: boolean
 
-  @OneToMany(() => Class, (classEntity) => classEntity.instructor)
+  @OneToMany(() => Class, (classEntity) => classEntity.instructor, {
+    nullable: true
+  })
   classesTeaching: Class[]
 
-  @OneToMany(() => CheckIn, (checkIn) => checkIn.member)
+  @OneToMany(() => CheckIn, (checkIn) => checkIn.member, { nullable: true })
   checkIns: CheckIn[]
 }

@@ -3,6 +3,7 @@ import { AuthService } from './auth.service'
 import { AuthDto } from './dtos/auth.dto'
 import { ApiOperation } from '@nestjs/swagger'
 import { VerifyDto } from './dtos/verify.dto'
+import { VerifyResponseDto } from './dtos/verify-response.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -18,7 +19,7 @@ export class AuthController {
   }
 
   @Post('/verify')
-  async verify(@Body() dto: VerifyDto) {
-    await this.service.verify(dto)
+  async verify(@Body() dto: VerifyDto): Promise<VerifyResponseDto> {
+    return this.service.verify(dto)
   }
 }
