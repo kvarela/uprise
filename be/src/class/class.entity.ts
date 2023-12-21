@@ -11,6 +11,8 @@ import {
 import { Member } from '../member/member.entity'
 import { Style } from '../style/style.entity'
 import { ScheduledClass } from './scheduled-class.entity'
+import { Level } from './level.enum'
+import { Gender } from '../gender.enum'
 
 @Entity()
 export class Class extends BaseEntity {
@@ -20,8 +22,20 @@ export class Class extends BaseEntity {
   @Column()
   name: string
 
-  @ManyToOne(() => Style, (style) => style.classes)
+  @Column({ default: Level.ALL })
+  level: Level
+
+  @Column({ default: Gender.MIXED })
+  gender: Gender
+
+  @ManyToOne(() => Style, (style) => style.classes, { nullable: true })
   style: Style
+
+  @Column({ default: 14 })
+  minAge: number
+
+  @Column({ default: Number.MAX_SAFE_INTEGER })
+  maxAge: number
 
   @CreateDateColumn()
   createdAt: Date
