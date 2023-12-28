@@ -6,6 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn
 } from 'typeorm'
 import { Member } from '../member/member.entity'
@@ -15,6 +16,16 @@ import { Level } from './level.enum'
 import { Gender } from '../gender.enum'
 
 @Entity()
+@Unique([
+  'name',
+  'gender',
+  'style',
+  'instructor',
+  'level',
+  'minAge',
+  'maxAge',
+  'durationHours'
+])
 export class Class extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number

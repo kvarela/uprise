@@ -5,5 +5,6 @@ export enum Level {
   INTER_ADVANCED = 'Inter/adv',
   ADVANCED = 'Advanced',
   KIDS_4_7 = 'Kids 4-7',
-  KIDS_8_13 = 'Kids 8-13'
+  KIDS_8_13 = 'Kids 8-13',
+  INVITE = 'Invite Only'
 }
