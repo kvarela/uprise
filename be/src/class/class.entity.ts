@@ -14,6 +14,8 @@ import { Style } from '../style/style.entity'
 import { ScheduledClass } from './scheduled-class.entity'
 import { Level } from './level.enum'
 import { Gender } from '../gender.enum'
+import { CheckIn } from '../check-in/check-in.entity'
+import { DayOfWeek } from './day-of-week.enum'
 
 @Entity()
 @Unique([
@@ -62,6 +64,12 @@ export class Class extends BaseEntity {
   @Column({ default: 1, type: 'float' })
   durationHours: number
 
-  @OneToMany(() => ScheduledClass, (scheduledClass) => scheduledClass.class)
-  scheduledClasses: ScheduledClass[]
+  @OneToMany(() => CheckIn, (checkIn) => checkIn.class)
+  checkIns: CheckIn[]
+
+  @Column({ type: 'float', nullable: false })
+  startHour: number
+
+  @Column({ type: 'int' })
+  dayOfWeek: DayOfWeek
 }

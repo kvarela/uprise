@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { Member } from '../member/member.entity'
-import { ScheduledClass } from '../class/scheduled-class.entity'
+import { Class } from '../class/class.entity'
 
 @Entity()
 export class CheckIn extends BaseEntity {
@@ -16,8 +16,8 @@ export class CheckIn extends BaseEntity {
   @ManyToOne(() => Member, (member) => member.checkIns)
   member: Member
 
-  @ManyToOne(() => ScheduledClass, (scheduledClass) => scheduledClass.checkIns)
-  scheduledClass: ScheduledClass
+  @ManyToOne(() => Class, (c) => c.checkIns)
+  class: Class
 
   @CreateDateColumn()
   createdAt: Date
