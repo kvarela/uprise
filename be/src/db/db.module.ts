@@ -1,15 +1,5 @@
 import { TypeOrmModule } from '@nestjs/typeorm'
-import * as dotenv from 'dotenv'
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies/snake-naming.strategy'
-dotenv.config()
+import { TYPEORM_OPTIONS } from '../typeorm.options'
 
-console.log('process.env.DATABASE_URL', process.env.DATABASE_URL)
-
-export const dbModule = TypeOrmModule.forRoot({
-  type: 'postgres',
-  url: process.env.DATABASE_URL,
-  synchronize: true,
-  autoLoadEntities: true,
-  retryAttempts: 2,
-  namingStrategy: new SnakeNamingStrategy()
-})
+console.log({ TYPEORM_OPTIONS })
+export const dbModule = TypeOrmModule.forRoot(TYPEORM_OPTIONS)

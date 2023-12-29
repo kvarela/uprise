@@ -4,15 +4,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
 import { MembershipType } from './membership-type.entity'
-import { MembershipStatus } from './membership-status.enum'
+import { MembershipStatus } from './enums/membership-status.enum'
 import { Class } from '../class/class.entity'
 import { CheckIn } from '../check-in/check-in.entity'
+import { Gender } from '../gender.enum'
 
 @Entity()
 export class Member extends BaseEntity {
@@ -25,13 +27,16 @@ export class Member extends BaseEntity {
   @Column({ nullable: true })
   dob: Date
 
+  @Column({ default: Gender.MALE })
+  gender: Gender
+
   @Column({ nullable: true })
   address: string
 
   @Column({ nullable: true })
   email: string
 
-  @Column()
+  @Column({ unique: true })
   phone: string
 
   @Column({ nullable: true })
@@ -54,7 +59,7 @@ export class Member extends BaseEntity {
   @Column({ default: false })
   isStaff: boolean
 
-  @OneToMany(() => Class, (classEntity) => classEntity.instructor, {
+  @ManyToMany(() => Class, (classEntity) => classEntity.instructors, {
     nullable: true
   })
   classesTeaching: Class[]

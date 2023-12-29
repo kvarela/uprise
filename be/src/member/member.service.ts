@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm'
 
 @Injectable()
 export class MemberService {
+  static MAX_AGE_YOUTH = 14
+  static MIN_AGE_YOUTH = 4
   constructor(@InjectRepository(Member) private repo: Repository<Member>) {}
 
   async create(phone: string): Promise<Member> {
