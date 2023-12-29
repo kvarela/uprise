@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -58,7 +59,7 @@ export class Member extends BaseEntity {
   @Column({ default: false })
   isStaff: boolean
 
-  @OneToMany(() => Class, (classEntity) => classEntity.instructor, {
+  @ManyToMany(() => Class, (classEntity) => classEntity.instructors, {
     nullable: true
   })
   classesTeaching: Class[]

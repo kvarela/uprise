@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -12,23 +13,13 @@ import {
 } from 'typeorm'
 import { Member } from '../member/member.entity'
 import { Style } from '../style/style.entity'
-import { ScheduledClass } from './scheduled-class.entity'
 import { Level } from './level.enum'
 import { Gender } from '../gender.enum'
 import { CheckIn } from '../check-in/check-in.entity'
 import { DayOfWeek } from './day-of-week.enum'
 
 @Entity()
-@Unique([
-  'name',
-  'gender',
-  'style',
-  'instructor',
-  'level',
-  'minAge',
-  'maxAge',
-  'durationHours'
-])
+@Unique(['name', 'gender', 'style', 'level', 'startHour', 'dayOfWeek'])
 export class Class extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
@@ -48,7 +39,7 @@ export class Class extends BaseEntity {
   @Column({ default: 14 })
   minAge: number
 
-  @Column({ default: Number.MAX_SAFE_INTEGER })
+  @Column({ default: 200 })
   maxAge: number
 
   @CreateDateColumn()
@@ -60,6 +51,7 @@ export class Class extends BaseEntity {
   @ManyToMany(() => Member, (member) => member.classesTeaching, {
     nullable: true
   })
+  @JoinTable({ name: 'class_instructor' })
   instructors: Member[]
 
   @Column({ default: 1, type: 'float' })
