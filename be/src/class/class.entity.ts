@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -56,10 +57,10 @@ export class Class extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @ManyToOne(() => Member, (member) => member.classesTeaching, {
+  @ManyToMany(() => Member, (member) => member.classesTeaching, {
     nullable: true
   })
-  instructor: Member
+  instructors: Member[]
 
   @Column({ default: 1, type: 'float' })
   durationHours: number

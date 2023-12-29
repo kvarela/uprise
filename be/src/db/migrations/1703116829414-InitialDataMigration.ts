@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm'
 import { MemberService } from '../../member/member.service'
 import { Level } from '../../class/level.enum'
 import { Gender } from '../../gender.enum'
+import { DayOfWeek } from '../../class/day-of-week.enum'
 
 export class InitialDataMigration1703116829414 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -12,10 +13,6 @@ export class InitialDataMigration1703116829414 implements MigrationInterface {
     await queryRunner.query(`
             ALTER TABLE "check_in"
             ADD CONSTRAINT "FK_000528c95cefb269e6b19d6884a" FOREIGN KEY ("scheduled_class_id") REFERENCES "scheduled_class"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
-        `)
-    await queryRunner.query(`
-            ALTER TABLE "scheduled_class"
-            ADD CONSTRAINT "FK_b591cbff9f7ac7229d0eb980f17" FOREIGN KEY ("class_id") REFERENCES "class"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
         `)
     await queryRunner.query(`
             ALTER TABLE "class"
@@ -171,154 +168,179 @@ export class InitialDataMigration1703116829414 implements MigrationInterface {
         `)
 
     // Insert classes
-    let [c] = await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${lubo.id}, 1, '${Gender.MIXED}')
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${lubo.id}, 1, '${Gender.MIXED}', 7, ${DayOfWeek.MONDAY})
         RETURNING id`)
-    for (let i = 0; i < NUM_WEEKS; i++) {
-      await queryRunner.query(`
-            INSERT INTO scheduled_class (class_id, start_time)
-            VALUES (${c.id}, '2021-06-01 17:00:00')
-        `)
-    }
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${gustavo.id}, 1, '${Gender.MIXED}', 10, ${DayOfWeek.MONDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${abraham.id}, 1, '${Gender.MIXED}', 10, ${DayOfWeek.MONDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('MMA', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${mma.id}, ${pete.id}, 1, '${Gender.MIXED}', 17, ${DayOfWeek.MONDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${owen.id}, 1, '${Gender.MIXED}', 18, ${DayOfWeek.MONDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai (Clinch)', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}', 18, ${DayOfWeek.MONDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Strength & Conditioning', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, null, ${jason.id}, 1, '${Gender.MIXED}', 19, ${DayOfWeek.MONDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu', '${Level.ADVANCED}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${axel.id}, 1, '${Gender.MIXED}', 19, ${DayOfWeek.MONDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${gustavo.id}, 1, '${Gender.MIXED}', 20, ${DayOfWeek.MONDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - Rolls', '${Level.INTERMEDIATE}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${pete.id}, 1, '${Gender.MIXED}', 7, ${DayOfWeek.TUESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${pete.id}, 1, '${Gender.MIXED}', 10, ${DayOfWeek.TUESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('MMA', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${mma.id}, ${lubo.id}, 1, '${Gender.MIXED}', 11, ${DayOfWeek.TUESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai (Boxing)', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${rich.id}, 1, '${Gender.MIXED}', 18, ${DayOfWeek.TUESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai (Boxing)', '${Level.INTER_ADVANCED}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}', 19, ${DayOfWeek.TUESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${gustavo.id}, 1, '${Gender.MIXED}', 20, ${DayOfWeek.TUESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${lubo.id}, 1, '${Gender.MIXED}', 7, ${DayOfWeek.WEDNESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${gustavo.id}, 1, '${Gender.MIXED}', 10, ${DayOfWeek.WEDNESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${sasha.id}, 1, '${Gender.MIXED}', 10, ${DayOfWeek.WEDNESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('MMA Basics', '${Level.KIDS_4_7}', ${MemberService.MIN_AGE_YOUTH}, 8, ${mma.id}, ${pete.id}, 1, '${Gender.MIXED}', 16, ${DayOfWeek.WEDNESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('MMA Basics', '${Level.KIDS_8_13}', 8, ${MemberService.MAX_AGE_YOUTH}, ${mma.id}, ${pete.id}, 1, '${Gender.MIXED}', 17, ${DayOfWeek.WEDNESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai (Kicks & Blocks)', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${somyos.id}, 1, '${Gender.MIXED}', 18, ${DayOfWeek.WEDNESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai (Kicks & Blocks)', '${Level.INTER_ADVANCED}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${eric.id}, 1, '${Gender.MIXED}', 19, ${DayOfWeek.WEDNESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('MMA', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${mma.id}, ${james.id}, 1, '${Gender.MIXED}', 20, ${DayOfWeek.WEDNESDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${pete.id}, 1, '${Gender.MIXED}', 10, ${DayOfWeek.THURSDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('MMA', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${mma.id}, ${lubo.id}, 1, '${Gender.MIXED}', 11, ${DayOfWeek.THURSDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai (Pad Work)', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${amir.id}, 1, '${Gender.MIXED}', 18, ${DayOfWeek.THURSDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai (Pad Work)', '${Level.INTER_ADVANCED}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}', 19, ${DayOfWeek.THURSDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${gustavo.id}, 1, '${Gender.MIXED}', 20, ${DayOfWeek.THURSDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai Fight Team', '${Level.INVITE}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}', 20, ${DayOfWeek.THURSDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${lubo.id}, 1, '${Gender.MIXED}', 7, ${DayOfWeek.FRIDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${gustavo.id}, 1, '${Gender.MIXED}', 10, ${DayOfWeek.FRIDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${abraham.id}, 1, '${Gender.MIXED}', 10, ${DayOfWeek.FRIDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai Sparring', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}', 18, ${DayOfWeek.FRIDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai Sparring', '${Level.INTER_ADVANCED}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}', 19, ${DayOfWeek.FRIDAY})
+        RETURNING id`)
+    await queryRunner.query(`
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${marciano.id}, 1, '${Gender.MIXED}', 20, ${DayOfWeek.FRIDAY})
+        RETURNING id`)
 
+    // Saturday
     await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu - Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${gustavo.id}, 1, '${Gender.MIXED}')
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('MMA Basics', '${Level.KIDS_4_7}', ${MemberService.MIN_AGE_YOUTH}, 8, ${mma.id}, ${pete.id}, 1, '${Gender.MIXED}', 9, ${DayOfWeek.SATURDAY})
         RETURNING id`)
     await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${abraham.id}, 1, '${Gender.MIXED}')
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('MMA Basics', '${Level.KIDS_8_13}', 8, ${MemberService.MAX_AGE_YOUTH}, ${mma.id}, ${pete.id}, 1, '${Gender.MIXED}', 10, ${DayOfWeek.SATURDAY})
         RETURNING id`)
     await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('MMA', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${mma.id}, ${pete.id}, 1, '${Gender.MIXED}')
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Muay Thai', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}', 11, ${DayOfWeek.SATURDAY})
         RETURNING id`)
     await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${owen.id}, 1, '${Gender.MIXED}')
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Yoga', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${yoga.id}, ${val.id}, 1, '${Gender.MIXED}', 12, ${DayOfWeek.SATURDAY})
         RETURNING id`)
     await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai (Clinch)', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}')
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Jiu Jitsu', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${joanna.id}, 1, '${Gender.FEMALE}', 13, ${DayOfWeek.SATURDAY})
         RETURNING id`)
     await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Strength & Conditioning', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, null, ${jason.id}, 1, '${Gender.MIXED}')
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('MMA', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${mma.id}, ${lubo.id}, 1, '${Gender.MIXED}', 13, ${DayOfWeek.SATURDAY})
         RETURNING id`)
+
+    // Sunday
     await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu', '${Level.ADVANCED}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${axel.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu - Rolls', '${Level.INTERMEDIATE}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('MMA', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${mma.id}, ${lubo.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai (Boxing)', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${rich.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai (Boxing)', '${Level.INTER_ADVANCED}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${gustavo.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${lubo.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${gustavo.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${sasha.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('MMA Basics', '${Level.KIDS_4_7}', ${MemberService.MIN_AGE_YOUTH}, 8, ${mma.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('MMA Basics', '${Level.KIDS_8_13}', 8, ${MemberService.MAX_AGE_YOUTH}, ${mma.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai (Kicks & Blocks)', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${somyos.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai (Kicks & Blocks)', '${Level.INTER_ADVANCED}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${eric.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('MMA', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${mma.id}, ${james.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('MMA', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${mma.id}, ${lubo.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai (Pad Work)', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${amir.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai (Pad Work)', '${Level.INTER_ADVANCED}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai Fight Team', '${Level.INVITE}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai Sparring', '${Level.BEGINNER}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai Sparring', '${Level.INTER_ADVANCED}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu - No Gi', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${marciano.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Muay Thai', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${muayThai.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Yoga', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${yoga.id}, ${val.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${pete.id}, 1, '${Gender.MIXED}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Jiu Jitsu', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${bjj.id}, ${joanna.id}, 1, '${Gender.FEMALE}')
-        RETURNING id`)
-    await queryRunner.query(`
-            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender)
-            VALUES ('Submission Wrestling', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${wrestling.id}, ${axel.id}, 2, '${Gender.MIXED}')
+            INSERT INTO class (name, level, min_age, max_age, style_id, instructor_id, duration_hours, gender, start_hour, day_of_week)
+            VALUES ('Submission Wrestling', '${Level.ALL}', ${MemberService.MAX_AGE_YOUTH}, ${Number.MAX_SAFE_INTEGER}, ${wrestling.id}, ${axel.id}, 2, '${Gender.MIXED}', 10, ${DayOfWeek.SUNDAY})
         RETURNING id`)
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(): Promise<void> {}
 }
