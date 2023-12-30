@@ -14,5 +14,7 @@ export const TYPEORM_OPTIONS: TypeOrmModuleOptions = {
   synchronize: false,
   entities: [join(__dirname, '**', '*.entity.{ts,js}')],
   retryAttempts: 2,
-  namingStrategy: new SnakeNamingStrategy()
+  namingStrategy: new SnakeNamingStrategy(),
+  migrations: [join(__dirname, '**', '/migrations/*{.ts,.js}')],
+  migrationsRun: true // Auto-run migrations
 }
